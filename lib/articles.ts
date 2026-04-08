@@ -888,3 +888,25 @@ export function getArticleById(id: string): Article | undefined {
 export function getAllArticles(): Article[] {
   return articles;
 }
+
+export function searchArticles(query: string): Article[] {
+  if (!query.trim()) return [];
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+  return articles
+    .map((article) => {
+      const corpus = [
+        article.title,
+        article.description,
+        article.content,
+        article.category,
+        ...article.keywords,
+        ...article.faqs.map((f) => f.question + ' ' + f.answer),
+      ].join(' ').toLowerCase();
+
+      const hits = terms.filter((t) => corpus.includes(t)).length;
+      return { article, hits };
+    })
+    .filter(({ hits }) => hits > 0)
+    .sort((a, b) => b.hits - a.hits)
+    .map(({ article }) => article);
+}

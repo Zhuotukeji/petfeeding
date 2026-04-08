@@ -29,6 +29,17 @@ export default function Home() {
     },
   ];
 
+  const popularSearches = [
+    'puppy feeding schedule',
+    'how much to feed a cat',
+    'senior dog food',
+    'parrot diet',
+    'rabbit hay',
+    'kitten nutrition',
+    'bird pellets',
+    'hamster food',
+  ];
+
   return (
     <div className="bg-white">
       {/* Hero Section */}
@@ -44,8 +55,22 @@ export default function Home() {
             </p>
 
             {/* Search Box */}
-            <div className="mt-10">
+            <div className="mt-10 px-4">
               <SearchBox />
+            </div>
+
+            {/* Popular searches */}
+            <div className="mt-5 flex flex-wrap justify-center gap-2 px-4">
+              <span className="text-sm text-gray-400 self-center mr-1">Try:</span>
+              {popularSearches.map((term) => (
+                <Link
+                  key={term}
+                  href={`/search?q=${encodeURIComponent(term)}`}
+                  className="text-sm bg-white border border-gray-200 hover:border-green-400 hover:text-green-700 text-gray-600 px-3 py-1 rounded-full shadow-sm transition-colors"
+                >
+                  {term}
+                </Link>
+              ))}
             </div>
           </div>
         </div>
